@@ -1,0 +1,11 @@
+{
+  "mount": {
+    "src": "/"
+  },
+  "buildOptions": {
+    "baseUrl": "/rannis-test",
+    "out": "./docs"
+  },
+  "extends": "@snowpack/app-scripts-react",
+  "plugins": ["@snowpack/plugin-postcss", "@snowpack/plugin-react-refresh"]
+}

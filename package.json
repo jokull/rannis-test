@@ -1,0 +1,27 @@
+{
+  "name": "rannis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "snowpack build && touch ./docs/.nojekyll"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-react": "^7.12.13",
+    "@snowpack/app-scripts-react": "^2.0.0",
+    "@snowpack/plugin-build-script": "^2.1.0",
+    "@snowpack/plugin-postcss": "^1.1.0",
+    "@snowpack/plugin-react-refresh": "^2.4.0",
+    "postcss-cli": "^8.3.1",
+    "snowpack": "^3.0.13",
+    "tailwindcss": "^2.0.3"
+  },
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "victory-native": "^35.3.1"
+  }
+}
