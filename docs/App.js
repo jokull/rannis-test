@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "./_snowpack/pkg/react.js";
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryLegend } from "./_snowpack/pkg/victory.js";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryStack, VictoryLegend, VictoryLabel } from "./_snowpack/pkg/victory.js";
 import theme from "./victoryTheme.js";
 
 const Logo = () => /*#__PURE__*/React.createElement("svg", {
@@ -9,7 +9,7 @@ const Logo = () => /*#__PURE__*/React.createElement("svg", {
   fill: "none",
   xmlns: "http://www.w3.org/2000/svg"
 }, /*#__PURE__*/React.createElement("g", {
-  "clip-path": "url(#clip0)"
+  clipPath: "url(#clip0)"
 }, /*#__PURE__*/React.createElement("path", {
   d: "M136.994 30.859H126.18C125.302 30.859 124.59 31.571 124.59 32.4492V78.0424C124.59 78.9207 125.302 79.6327 126.18 79.6327H136.994C137.872 79.6327 138.584 78.9207 138.584 78.0424V32.4492C138.584 31.571 137.872 30.859 136.994 30.859Z",
   fill: "black"
@@ -54,19 +54,19 @@ const Logo = () => /*#__PURE__*/React.createElement("svg", {
   y2: "77.214",
   gradientUnits: "userSpaceOnUse"
 }, /*#__PURE__*/React.createElement("stop", {
-  "stop-color": "#0161FD"
+  stopColor: "#0161FD"
 }), /*#__PURE__*/React.createElement("stop", {
   offset: "0.25",
-  "stop-color": "#3F46D2"
+  stopColor: "#3F46D2"
 }), /*#__PURE__*/React.createElement("stop", {
   offset: "0.51",
-  "stop-color": "#812EA4"
+  stopColor: "#812EA4"
 }), /*#__PURE__*/React.createElement("stop", {
   offset: "0.77",
-  "stop-color": "#C21578"
+  stopColor: "#C21578"
 }), /*#__PURE__*/React.createElement("stop", {
   offset: "1",
-  "stop-color": "#FD0050"
+  stopColor: "#FD0050"
 })), /*#__PURE__*/React.createElement("clipPath", {
   id: "clip0"
 }, /*#__PURE__*/React.createElement("rect", {
@@ -77,6 +77,7 @@ const Logo = () => /*#__PURE__*/React.createElement("svg", {
 
 const appliedDataUrl = "https://rannis-mtckiezzpq-lz.a.run.app/rannis.json?sql=select+fund%2C+fund_year%2C+sum(applied_amount)+from+tdf_app+group+by+fund%2C+fund_year+order+by+fund%2C+fund_year%3B";
 const grantedDataUrl = "https://rannis-mtckiezzpq-lz.a.run.app/rannis.json?sql=select+fund%2C+fund_year%2C+count(id)+from+tdf_granted+group+by+fund%2C+fund_year+order+by+fund%2C+fund_year%3B";
+const genderDataUrl = "https://rannis-mtckiezzpq-lz.a.run.app/rannis.json?sql=select+gender%2C+book_year%2C+sum(book_amount)+from+tdf_contract+where+book_year+group+by+book_year%2C+gender%3B";
 
 const FundGraph = props => {
   const [data, setData] = useState(null);
@@ -153,7 +154,7 @@ const FundGraph = props => {
     data: funds.map((_fund, i) => {
       const color = theme.group.colorScale[i];
       return {
-        name: _fund,
+        name: _fund || "Annað",
         symbol: {
           fill: color
         }
@@ -174,37 +175,57 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "text-3xl mb-8"
   }, "T\xE6kni\xFEr\xF3unarsj\xF3\xF0ur"), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col lg:flex-row"
+    className: "grid gap-4 grid-cols-1 lg:grid-cols-2"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "max-w-2xl lg:w-full"
+    className: "w-full"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "text-xl"
+    className: "text-xl mb-4"
   }, "Heildarfj\xE1rh\xE6\xF0ir ums\xF3kna"), /*#__PURE__*/React.createElement(FundGraph, {
     url: appliedDataUrl,
     tickFormat: x => {
-      return `${(x / (1000 * 1000)).toLocaleString("is-is")} m. kr.`;
+      return `${(x / (1000 * 1000)).toLocaleString("is-is", {
+        maximumFractionDigits: 0
+      })} m. kr.`;
     }
   }), /*#__PURE__*/React.createElement("div", {
-    class: "text-right text-xs text-primary"
+    className: "text-right text-xs text-primary"
   }, /*#__PURE__*/React.createElement("a", {
     href: appliedDataUrl
   }, "JSON"), " \xB7", " ", /*#__PURE__*/React.createElement("a", {
     href: appliedDataUrl.replace(".json?", "?")
   }, "Datasette SQL"))), /*#__PURE__*/React.createElement("div", {
-    className: "max-w-2xl lg:w-full"
+    className: "w-full"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "text-xl"
+    className: "text-xl mb-4"
   }, "Fj\xF6ldi sam\xFEykktra ums\xF3kna"), /*#__PURE__*/React.createElement(FundGraph, {
     url: grantedDataUrl,
     tickFormat: x => {
       return x.toLocaleString("is-is");
     }
   }), /*#__PURE__*/React.createElement("div", {
-    class: "text-right text-xs text-primary"
+    className: "text-right text-xs text-primary"
   }, /*#__PURE__*/React.createElement("a", {
     href: grantedDataUrl
   }, "JSON"), " \xB7", " ", /*#__PURE__*/React.createElement("a", {
     href: grantedDataUrl.replace(".json?", "?")
+  }, "Datasette SQL"))), /*#__PURE__*/React.createElement("div", {
+    className: "w-full"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xl mb-4"
+  }, "Kynjaskipting \xE1 sam\xFEykktum styrkveitingum"), /*#__PURE__*/React.createElement(FundGraph, {
+    url: genderDataUrl,
+    tickFormat: x => {
+      return `${(x / (1000 * 1000)).toLocaleString("is-is")} m. kr.`;
+    },
+    labels: ({
+      datum
+    }) => datum.y
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "text-right text-xs text-primary"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: genderDataUrl
+  }, "JSON"), " \xB7", " ", /*#__PURE__*/React.createElement("a", {
+    href: genderDataUrl.replace(".json?", "?")
   }, "Datasette SQL"))))), /*#__PURE__*/React.createElement("footer", null, "-"));
 }
 

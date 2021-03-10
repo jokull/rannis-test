@@ -21666,4 +21666,4 @@ Object.defineProperty(VictoryLegend, "expectedComponents", {
 });
 var victoryLegend = addEvents(VictoryLegend);
 
-export { VictoryAxis$1 as VictoryAxis, victoryBar as VictoryBar, VictoryChart, victoryLegend as VictoryLegend, VictoryStack };
+export { VictoryAxis$1 as VictoryAxis, victoryBar as VictoryBar, VictoryChart, VictoryLabel, victoryLegend as VictoryLegend, VictoryStack };
