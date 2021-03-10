@@ -5,6 +5,7 @@ import {
   VictoryAxis,
   VictoryStack,
   VictoryLegend,
+  VictoryLabel,
 } from "victory";
 
 import theme from "./victoryTheme";
@@ -17,7 +18,7 @@ const Logo = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0)">
+    <g clipPath="url(#clip0)">
       <path
         d="M136.994 30.859H126.18C125.302 30.859 124.59 31.571 124.59 32.4492V78.0424C124.59 78.9207 125.302 79.6327 126.18 79.6327H136.994C137.872 79.6327 138.584 78.9207 138.584 78.0424V32.4492C138.584 31.571 137.872 30.859 136.994 30.859Z"
         fill="black"
@@ -76,11 +77,11 @@ const Logo = () => (
         y2="77.214"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#0161FD" />
-        <stop offset="0.25" stop-color="#3F46D2" />
-        <stop offset="0.51" stop-color="#812EA4" />
-        <stop offset="0.77" stop-color="#C21578" />
-        <stop offset="1" stop-color="#FD0050" />
+        <stop stopColor="#0161FD" />
+        <stop offset="0.25" stopColor="#3F46D2" />
+        <stop offset="0.51" stopColor="#812EA4" />
+        <stop offset="0.77" stopColor="#C21578" />
+        <stop offset="1" stopColor="#FD0050" />
       </linearGradient>
       <clipPath id="clip0">
         <rect width="495.215" height="79.9508" fill="white" />
@@ -94,6 +95,9 @@ const appliedDataUrl =
 
 const grantedDataUrl =
   "https://rannis-mtckiezzpq-lz.a.run.app/rannis.json?sql=select+fund%2C+fund_year%2C+count(id)+from+tdf_granted+group+by+fund%2C+fund_year+order+by+fund%2C+fund_year%3B";
+
+const genderDataUrl =
+  "https://rannis-mtckiezzpq-lz.a.run.app/rannis.json?sql=select+gender%2C+book_year%2C+sum(book_amount)+from+tdf_contract+where+book_year+group+by+book_year%2C+gender%3B";
 
 const FundGraph = (props) => {
   const [data, setData] = useState(null);
@@ -155,7 +159,7 @@ const FundGraph = (props) => {
         style={{ border: { width: 0 }, title: { fontSize: 20 } }}
         data={funds.map((_fund, i) => {
           const color = theme.group.colorScale[i];
-          return { name: _fund, symbol: { fill: color } };
+          return { name: _fund || "Annað", symbol: { fill: color } };
         })}
       />
     </VictoryChart>
@@ -175,31 +179,49 @@ function App() {
       </header>
       <div className="flex-grow flex flex-col">
         <div className="text-3xl mb-8">Tækniþróunarsjóður</div>
-        <div className="flex flex-col lg:flex-row">
-          <div className="max-w-2xl lg:w-full">
-            <div className="text-xl">Heildarfjárhæðir umsókna</div>
+        <div className="grid gap-4 grid-cols-1 lg:grid-cols-2">
+          <div className="w-full">
+            <div className="text-xl mb-4">Heildarfjárhæðir umsókna</div>
             <FundGraph
               url={appliedDataUrl}
               tickFormat={(x) => {
-                return `${(x / (1000 * 1000)).toLocaleString("is-is")} m. kr.`;
+                return `${(x / (1000 * 1000)).toLocaleString("is-is", {
+                  maximumFractionDigits: 0,
+                })} m. kr.`;
               }}
             />
-            <div class="text-right text-xs text-primary">
+            <div className="text-right text-xs text-primary">
               <a href={appliedDataUrl}>JSON</a> ·{" "}
               <a href={appliedDataUrl.replace(".json?", "?")}>Datasette SQL</a>
             </div>
           </div>
-          <div className="max-w-2xl lg:w-full">
-            <div className="text-xl">Fjöldi samþykktra umsókna</div>
+          <div className="w-full">
+            <div className="text-xl mb-4">Fjöldi samþykktra umsókna</div>
             <FundGraph
               url={grantedDataUrl}
               tickFormat={(x) => {
                 return x.toLocaleString("is-is");
               }}
             />
-            <div class="text-right text-xs text-primary">
+            <div className="text-right text-xs text-primary">
               <a href={grantedDataUrl}>JSON</a> ·{" "}
               <a href={grantedDataUrl.replace(".json?", "?")}>Datasette SQL</a>
+            </div>
+          </div>
+          <div className="w-full">
+            <div className="text-xl mb-4">
+              Kynjaskipting á samþykktum styrkveitingum
+            </div>
+            <FundGraph
+              url={genderDataUrl}
+              tickFormat={(x) => {
+                return `${(x / (1000 * 1000)).toLocaleString("is-is")} m. kr.`;
+              }}
+              labels={({ datum }) => datum.y}
+            />
+            <div className="text-right text-xs text-primary">
+              <a href={genderDataUrl}>JSON</a> ·{" "}
+              <a href={genderDataUrl.replace(".json?", "?")}>Datasette SQL</a>
             </div>
           </div>
         </div>
